@@ -1,0 +1,23 @@
+{
+  "name": "electron-coder",
+  "version": "1.0.0",
+  "description": "基于electron的代码自动构建工具",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xuzengqiang/electron-coder.git"
+  },
+  "keywords": [
+    "electron",
+    "代码构建"
+  ],
+  "author": "xuzengqiang",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/xuzengqiang/electron-coder/issues"
+  },
+  "homepage": "https://github.com/xuzengqiang/electron-coder#readme"
+}
