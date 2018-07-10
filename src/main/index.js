@@ -20,9 +20,22 @@ function createWindow () {
    * Initial window options
    */
   mainWindow = new BrowserWindow({
-    height: 563,
+    autoHideMenuBar: true,
     useContentSize: true,
-    width: 1000
+    height: 500,
+    width: 320,
+    /**
+     * 禁止缩放
+     */
+    resizable: false,
+    /**
+     * 禁止最大化
+     */
+    maximizable: false,
+    /**
+     * 禁止最小化
+     */
+    minimizable: false
   })
 
   mainWindow.loadURL(winURL)

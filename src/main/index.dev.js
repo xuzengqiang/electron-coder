@@ -11,13 +11,19 @@
 process.env.NODE_ENV = 'development'
 
 // Install `electron-debug` with `devtron`
-require('electron-debug')({ showDevTools: true })
+/**
+ * 开启调试模式
+ * @description 设置为true的时候会开启控制台
+ */
+require('electron-debug')({
+  showDevTools: false
+})
 
 // Install `vue-devtools`
 require('electron').app.on('ready', () => {
   let installExtension = require('electron-devtools-installer')
   installExtension.default(installExtension.VUEJS_DEVTOOLS)
-    .then(() => {})
+    .then(() => { })
     .catch(err => {
       console.log('Unable to install `vue-devtools`: \n', err)
     })
