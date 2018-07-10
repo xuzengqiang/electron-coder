@@ -35,7 +35,11 @@ function createWindow () {
     /**
      * 禁止最小化
      */
-    minimizable: false
+    minimizable: false,
+    /**
+     * 关闭边框
+     */
+    frame: false
   })
 
   mainWindow.loadURL(winURL)

@@ -1,5 +1,6 @@
 <template>
-  <div id="wrapper">
+  <div id="wrapper"
+       style="-webkit-app-region: drag">
     <el-form label-position="left">
       <el-form-item label="用户名">
         <el-input placeholder="请输入用户名"
