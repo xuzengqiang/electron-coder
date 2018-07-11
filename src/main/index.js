@@ -22,8 +22,8 @@ function createWindow () {
   mainWindow = new BrowserWindow({
     autoHideMenuBar: true,
     useContentSize: true,
-    height: 500,
-    width: 320,
+    height: 400,
+    width: 280,
     /**
      * 禁止缩放
      */
