@@ -1,5 +1,9 @@
 <template>
-  <div id="wrapper">
+  <div id="wrapper"
+       v-loading="loading"
+       element-loading-text="正在努力加载中..."
+       element-loading-background="rgba(0,0,0,0.5)"
+       element-loading-custom-class="data-loading">
     <vue-particles color="#dedede"
                    :particleOpacity="0.7"
                    :particlesNumber="100"
@@ -15,7 +19,7 @@
                    hoverMode="grab"
                    :clickEffect="true"
                    clickMode="push"
-                   class="lizi">
+                   class="particles">
     </vue-particles>
     <error-tip :visible="errorTip.visible"
                :message="errorTip.message">
@@ -55,6 +59,10 @@
 </template>
 
 <script>
+  import {
+    ipcRenderer,
+    remote
+  } from 'electron'
   import ErrorTip from './error-tip'
   export default {
     name: 'loginPage',
@@ -65,7 +73,8 @@
         errorTip: {
           visible: false,
           message: ''
-        }
+        },
+        loading: false
       }
     },
     components: {
@@ -74,9 +83,10 @@
     methods: {
       /**
        * 关闭窗口
+       * @description 触发主进程的close-login-window事件
        */
       closeWindow () {
-
+        ipcRenderer.send('close-login-window')
       },
       /**
        * 用户登录
@@ -85,6 +95,21 @@
         if (!/^admin$/.test(this.username)) {
           this.errorTip.visible = false
           this.errorTip.message = '用户名不存在!'
+        }
+
+        try {
+          this.loading = true
+          const BrowserWindow = remote.BrowserWindow
+          console.error(BrowserWindow, BrowserWindow.mainWindow, '>>>')
+          BrowserWindow.mainWindow.setSize(800, 600)
+          BrowserWindow.mainWindow.center()
+        } catch (e) {
+          console.error(e)
+        } finally {
+          setTimeout(() => {
+            this.loading = false
+            ipcRenderer.send('open-main-window')
+          }, 1000)
         }
       }
     }
@@ -135,11 +160,14 @@
     color: rgb(252, 88, 88);
     cursor: pointer;
   }
-  .lizi {
+  .particles {
     position: absolute;
     left: 0px;
     bottom: 0px;
     right: 0px;
     top: 0px;
+  }
+  #wrapper .data-loading .el-loading-text {
+    color: #fff;
   }
 </style>

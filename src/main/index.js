@@ -1,6 +1,11 @@
 'use strict'
 
-import { app, BrowserWindow } from 'electron'
+import {
+  app,
+  BrowserWindow,
+  ipcMain,
+  Menu
+} from 'electron'
 
 /**
  * Set `__static` path to static files in production
@@ -39,18 +44,30 @@ function createWindow () {
     /**
      * 关闭边框
      */
-    frame: false
+    frame: false,
+    transparent: false
   })
 
   mainWindow.loadURL(winURL)
+
+  /**
+   * 去掉默认的菜单栏
+   */
+  Menu.setApplicationMenu(null)
 
   mainWindow.on('closed', () => {
     mainWindow = null
   })
 }
 
+/**
+ * 当 Electron 完成初始化时被触发
+ */
 app.on('ready', createWindow)
 
+/**
+ * 当全部窗口关闭时退出
+ */
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit()
@@ -62,6 +79,44 @@ app.on('activate', () => {
     createWindow()
   }
 })
+
+/**
+ * 关闭登录窗口
+ * @date 2018-07-11 11:55:29
+ */
+ipcMain.on('close-login-window', () => {
+  app.quit()
+})
+
+ipcMain.on('open-main-window', (...params) => {
+  openMainWindow(...params)
+})
+
+/**
+ * 打开主窗口
+ * @date 2018-07-11 14:19:10
+ * @description 需要关闭登陆窗口
+ */
+function openMainWindow () {
+  let contentWindow = new BrowserWindow({
+    width: 1200,
+    height: 800
+  })
+
+  // 暂时隐藏登陆主窗体
+  mainWindow.hide()
+
+  // 加载首页内容
+  contentWindow.loadURL('http://localhost:9080/#/front')
+  // 当主窗体数据加载完成之后.显示主窗体
+  contentWindow.webContents.on('did-finish-load', () => {
+    contentWindow.show()
+  })
+
+  contentWindow.on('closed', function () {
+    contentWindow = null
+  })
+}
 
 /**
  * Auto Updater
